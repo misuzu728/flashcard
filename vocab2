@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>IELTS 頻出語彙 暗記カード（日→英）</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 20px;
+}
+.container { max-width: 800px; margin: 0 auto; }
+h1 { text-align: center; margin-bottom: 8px; font-size: 1.8rem; }
+.subtitle { text-align:center; color:#94a3b8; margin-bottom:20px; font-size:14px; }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin-bottom: 20px;
+}
+select, button {
+  padding: 10px 16px; border-radius: 8px; border: none;
+  background: #334155; color: #e2e8f0; cursor: pointer;
+  font-size: 14px; transition: 0.2s;
+}
+button:hover { background: #475569; }
+button.primary { background: #3b82f6; }
+button.primary:hover { background: #2563eb; }
+button.success { background: #10b981; }
+button.success:hover { background: #059669; }
+button.danger { background: #ef4444; }
+button.danger:hover { background: #dc2626; }
+button.toggle { background: #8b5cf6; }
+button.toggle:hover { background: #7c3aed; }
+.stats {
+  display: flex; justify-content: space-around;
+  background: #1e293b; padding: 12px; border-radius: 10px;
+  margin-bottom: 15px; font-size: 14px;
+}
+.stat-item { text-align: center; }
+.stat-num { font-size: 1.4rem; font-weight: bold; color: #60a5fa; }
+.progress-bar {
+  height: 8px; background: #334155; border-radius: 4px;
+  overflow: hidden; margin-bottom: 20px;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6);
+  transition: width 0.3s;
+}
+.card-wrapper { perspective: 1000px; margin-bottom: 20px; }
+.card {
+  background: #1e293b; border-radius: 16px;
+  min-height: 280px; padding: 40px 30px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.5s;
+  transform-style: preserve-3d; position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  border: 2px solid #334155;
+}
+.card.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 30px; text-align: center;
+}
+.card-back { transform: rotateY(180deg); }
+.card-theme {
+  font-size: 13px; color: #94a3b8;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+.card-content {
+  font-size: 1.6rem; font-weight: 600;
+  line-height: 1.4; margin-bottom: 15px;
+}
+.card-hint {
+  position: absolute; bottom: 15px; font-size: 12px; color: #64748b;
+}
+.card-type {
+  display: inline-block; padding: 3px 10px;
+  background: #3b82f6; color: white;
+  border-radius: 20px; font-size: 11px;
+  margin-bottom: 10px;
+}
+.direction-badge {
+  display:inline-block; padding:4px 12px; background:#8b5cf6;
+  border-radius:20px; font-size:12px; margin-bottom:10px;
+}
+.nav-buttons {
+  display: flex; justify-content: space-between; gap: 10px;
+  margin-bottom: 15px;
+}
+.nav-buttons button { flex: 1; }
+.action-buttons {
+  display: flex; gap: 10px; justify-content: center;
+}
+.action-buttons button { padding: 12px 30px; font-weight: bold; }
+.counter {
+  text-align: center; color: #94a3b8;
+  margin-bottom: 10px; font-size: 14px;
+}
+@media (max-width: 600px) {
+  .card-content { font-size: 1.3rem; }
+  .controls { flex-direction: column; }
+  select, button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎴 IELTS 頻出語彙 暗記カード</h1>
+  <div class="subtitle">日本語 → 英語 練習モード</div>
+ 
+  <div class="controls">
+	<select id="themeFilter">
+  	<option value="all">📚 全テーマ</option>
+  	<option value="environment">🌍 環境</option>
+  	<option value="society">👥 社会</option>
+  	<option value="economy">💰 経済</option>
+  	<option value="transport">🚗 交通・都市</option>
+  	<option value="education">🎓 教育</option>
+  	<option value="technology">💻 テクノロジー</option>
+  	<option value="consumer">🛒 消費</option>
+  	<option value="culture">🌐 文化</option>
+  	<option value="healthcare">🏥 健康</option>
+  	<option value="crime">🚔 犯罪</option>
+  	<option value="media">📺 メディア</option>
+  	<option value="work">💼 仕事</option>
+  	<option value="family">👨‍👩‍👧 家族</option>
+	</select>
+	<select id="modeFilter">
+  	<option value="all">全レベル</option>
+  	<option value="unlearned">未習得のみ</option>
+  	<option value="learned">習得済みのみ</option>
+	</select>
+	<button onclick="toggleDirection()" class="toggle" id="dirBtn">🔄 日→英</button>
+	<button onclick="shuffle()">🔀 シャッフル</button>
+	<button onclick="resetProgress()" class="danger">🗑️ リセット</button>
+  </div>
+
+  <div class="stats">
+	<div class="stat-item"><div class="stat-num" id="totalCount">0</div><div>総数</div></div>
+	<div class="stat-item"><div class="stat-num" id="learnedCount">0</div><div>習得</div></div>
+	<div class="stat-item"><div class="stat-num" id="progressPercent">0%</div><div>進捗</div></div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="counter" id="counter">0 / 0</div>
+
+  <div class="card-wrapper">
+	<div class="card" id="card" onclick="flip()">
+  	<div class="card-face card-front">
+    	<div class="card-theme" id="cardTheme"></div>
+    	<div class="card-type" id="cardType"></div>
+    	<div class="card-content" id="cardFront"></div>
+    	<div class="card-hint">クリックで英語を表示</div>
+  	</div>
+  	<div class="card-face card-back">
+    	<div class="card-theme" id="cardThemeBack"></div>
+    	<div class="card-content" id="cardBack"></div>
+    	<div class="card-hint">クリックで戻す</div>
+  	</div>
+	</div>
+  </div>
+
+  <div class="nav-buttons">
+	<button onclick="prev()">← 前 (←)</button>
+	<button onclick="next()" class="primary">次 → (→)</button>
+  </div>
+
+  <div class="action-buttons">
+	<button onclick="markLearned()" class="success">✅ 覚えた (1)</button>
+	<button onclick="markUnlearned()" class="danger">🔄 まだ (2)</button>
+  </div>
+
+  <p style="text-align:center;margin-top:20px;color:#64748b;font-size:12px;">
+	Space=反転 / ←→=移動 / 1=覚えた / 2=まだ / 🔄ボタンで方向切替
+  </p>
+</div>
+
+<script>
+const cards = [
+  {theme:"environment",type:"名詞",front:"pollution",back:"汚染"},
+  {theme:"environment",type:"名詞",front:"carbon emissions",back:"二酸化炭素排出"},
+  {theme:"environment",type:"名詞",front:"environmental damage",back:"環境破壊"},
+  {theme:"environment",type:"名詞",front:"sustainability",back:"持続可能性"},
+  {theme:"environment",type:"名詞",front:"food security / food shortage",back:"食料安全保障 / 食料不足"},
+  {theme:"environment",type:"動詞句",front:"cause physical harm",back:"身体的害を引き起こす"},
+  {theme:"environment",type:"動詞句",front:"emit large amounts of CO₂",back:"大量のCO₂を排出する"},
+  {theme:"environment",type:"動詞句",front:"diversify food sources",back:"食料源を多様化する"},
+  {theme:"environment",type:"Band7+",front:"trend toward sustainability",back:"持続可能性への傾向"},
+  {theme:"environment",type:"Band7+",front:"pose a threat to the environment",back:"環境への脅威となる"},
+  {theme:"society",type:"名詞",front:"social norms",back:"社会規範"},
+  {theme:"society",type:"名詞",front:"quality of life",back:"生活の質"},
+  {theme:"society",type:"名詞",front:"mental health issues",back:"メンタルヘルスの問題"},
+  {theme:"society",type:"名詞",front:"influx of people into cities",back:"都市への人口流入"},
+  {theme:"society",type:"動詞句",front:"reduce pressure on public services",back:"公共サービスへの負担を減らす"},
+  {theme:"society",type:"動詞句",front:"strengthen social connections",back:"社会的つながりを強化する"},
+  {theme:"society",type:"動詞句",front:"maintain productivity",back:"生産性を維持する"},
+  {theme:"society",type:"動詞句",front:"take on extremely demanding jobs",back:"非常に過酷な仕事を引き受ける"},
+  {theme:"society",type:"動詞句",front:"avoid excessively long working hours",back:"極端な長時間労働を避ける"},
+  {theme:"society",type:"Band7+",front:"reduced access to ~",back:"〜へのアクセスが減少した"},
+  {theme:"society",type:"Band7+",front:"luxurious lifestyles and material possessions",back:"贅沢なライフスタイルと物質的所有"},
+  {theme:"society",type:"Band7+",front:"excessive use of ~",back:"〜の過剰使用"},
+  {theme:"economy",type:"名詞",front:"economic growth / economic development",back:"経済成長 / 経済発展"},
+  {theme:"economy",type:"名詞",front:"source of income",back:"収入源"},
+  {theme:"economy",type:"名詞",front:"financial benefits",back:"経済的利益"},
+  {theme:"economy",type:"名詞",front:"tax revenue",back:"税収"},
+  {theme:"economy",type:"動詞句",front:"boost the economy",back:"経済を活性化する"},
+  {theme:"economy",type:"動詞句",front:"earn more income",back:"より多くの収入を得る"},
+  {theme:"economy",type:"動詞句",front:"generate revenue",back:"収益を生み出す"},
+  {theme:"economy",type:"動詞句",front:"reinvest into ~",back:"〜に再投資する"},
+  {theme:"economy",type:"Band7+",front:"labour-intensive industries",back:"労働集約型産業"},
+  {theme:"economy",type:"Band7+",front:"generate revenue that could be reinvested into expanding public transport",back:"公共交通拡大に再投資できる収益を生み出す"},
+  {theme:"transport",type:"名詞",front:"car ownership",back:"自動車所有"},
+  {theme:"transport",type:"名詞",front:"public transport network",back:"公共交通網"},
+  {theme:"transport",type:"名詞",front:"traffic congestion",back:"交通渋滞"},
+  {theme:"transport",type:"名詞",front:"urban mobility",back:"都市部の移動性"},
+  {theme:"transport",type:"動詞句",front:"ease traffic congestion",back:"交通渋滞を緩和する"},
+  {theme:"transport",type:"動詞句",front:"expand public transport networks",back:"公共交通網を拡大する"},
+  {theme:"transport",type:"動詞句",front:"impose higher taxes on car ownership",back:"自動車所有に高い税を課す"},
+  {theme:"transport",type:"Band7+",front:"traffic flow grinding to a near standstill",back:"交通の流れがほぼ停止する"},
+  {theme:"transport",type:"Band7+",front:"unavoidable congestion",back:"避けられない渋滞"},
+  {theme:"transport",type:"Band7+",front:"car dependence",back:"車依存"},
+  {theme:"education",type:"名詞",front:"digital literacy / high literacy",back:"デジタルリテラシー / 識字率"},
+  {theme:"education",type:"名詞",front:"school curriculum",back:"学校カリキュラム"},
+  {theme:"education",type:"名詞",front:"participation rate in higher education",back:"高等教育の進学率"},
+  {theme:"education",type:"動詞句",front:"acquire knowledge",back:"知識を習得する"},
+  {theme:"education",type:"動詞句",front:"develop skills / values",back:"スキル/価値観を育む"},
+  {theme:"education",type:"動詞句",front:"raise awareness",back:"意識を高める"},
+  {theme:"education",type:"動詞句",front:"include in school curriculum",back:"学校カリキュラムに含める"},
+  {theme:"education",type:"Band7+",front:"sufficient depth of knowledge",back:"十分な深さの知識"},
+  {theme:"education",type:"Band7+",front:"lack of specialisation",back:"専門性の欠如"},
+  {theme:"technology",type:"名詞",front:"digital literacy",back:"デジタルリテラシー"},
+  {theme:"technology",type:"名詞",front:"cloud-based systems",back:"クラウドベースのシステム"},
+  {theme:"technology",type:"名詞",front:"the emergence of AI",back:"AIの台頭"},
+  {theme:"technology",type:"名詞",front:"educational tool",back:"教育ツール"},
+  {theme:"technology",type:"動詞句",front:"rely on the Internet",back:"インターネットに依存する"},
+  {theme:"technology",type:"動詞句",front:"misuse of technology",back:"テクノロジーの誤用"},
+  {theme:"technology",type:"Band7+",front:"AI-powered ~",back:"AI搭載の〜"},
+  {theme:"consumer",type:"名詞",front:"e-commerce",back:"電子商取引"},
+  {theme:"consumer",type:"名詞",front:"consumer experience",back:"消費者体験"},
+  {theme:"consumer",type:"名詞",front:"mobile payment",back:"モバイル決済"},
+  {theme:"consumer",type:"名詞",front:"overconsumption",back:"過剰消費"},
+  {theme:"consumer",type:"名詞",front:"supply chain",back:"サプライチェーン"},
+  {theme:"consumer",type:"動詞句",front:"launch a small business",back:"小規模ビジネスを立ち上げる"},
+  {theme:"consumer",type:"Band7+",front:"AI-powered recommendations",back:"AIによる推薦"},
+  {theme:"consumer",type:"Band7+",front:"a vast array of options",back:"幅広い選択肢"},
+  {theme:"culture",type:"名詞",front:"cultural identity / cultural norms",back:"文化的アイデンティティ / 文化規範"},
+  {theme:"culture",type:"名詞",front:"shared values",back:"共有された価値観"},
+  {theme:"culture",type:"名詞",front:"sense of belonging",back:"帰属意識"},
+  {theme:"culture",type:"名詞",front:"country of origin",back:"出身国"},
+  {theme:"culture",type:"動詞句",front:"shape one's identity",back:"アイデンティティを形成する"},
+  {theme:"culture",type:"動詞句",front:"preserve cultural heritage",back:"文化遺産を保護する"},
+  {theme:"healthcare",type:"名詞",front:"health insurance",back:"健康保険"},
+  {theme:"healthcare",type:"名詞",front:"public hygiene",back:"公衆衛生"},
+  {theme:"healthcare",type:"名詞",front:"life expectancy",back:"平均寿命"},
+  {theme:"healthcare",type:"動詞句",front:"seek healthcare",back:"医療を受ける"},
+  {theme:"healthcare",type:"動詞句",front:"access adequate healthcare",back:"十分な医療にアクセスする"},
+  {theme:"healthcare",type:"動詞句",front:"impose higher taxes on ~",back:"〜に高い税を課す"},
+  {theme:"healthcare",type:"動詞句",front:"refrain from V-ing",back:"〜することを控える"},
+  {theme:"healthcare",type:"動詞句",front:"shift to a healthier diet",back:"より健康的な食事に切り替える"},
+  {theme:"healthcare",type:"動詞句",front:"help care for their grandchildren",back:"孫の世話を手伝う"},
+  {theme:"healthcare",type:"Band7+",front:"detrimental to ~",back:"〜に有害な"},
+  {theme:"healthcare",type:"Band7+",front:"life expectancy is increasing",back:"平均寿命が伸びている"},
+  {theme:"crime",type:"名詞",front:"crime rate",back:"犯罪率"},
+  {theme:"crime",type:"名詞",front:"juvenile delinquency",back:"少年犯罪"},
+  {theme:"crime",type:"名詞",front:"petty crime / violent crime",back:"軽犯罪 / 凶悪犯罪"},
+  {theme:"crime",type:"名詞",front:"white-collar crime",back:"知能犯罪"},
+  {theme:"crime",type:"名詞",front:"root causes of crime",back:"犯罪の根本原因"},
+  {theme:"crime",type:"名詞",front:"rehabilitation",back:"更生"},
+  {theme:"crime",type:"名詞",front:"deterrent",back:"抑止力"},
+  {theme:"crime",type:"名詞",front:"law enforcement",back:"法執行"},
+  {theme:"crime",type:"動詞句",front:"commit a crime",back:"犯罪を犯す"},
+  {theme:"crime",type:"動詞句",front:"combat / tackle crime",back:"犯罪と戦う/対処する"},
+  {theme:"crime",type:"動詞句",front:"deter potential offenders",back:"潜在的犯罪者を抑止する"},
+  {theme:"crime",type:"動詞句",front:"impose strict penalties on ~",back:"〜に厳しい罰を科す"},
+  {theme:"crime",type:"動詞句",front:"reintegrate offenders into society",back:"犯罪者を社会復帰させる"},
+  {theme:"crime",type:"Band7+",front:"a powerful deterrent against ~",back:"〜に対する強力な抑止力"},
+  {theme:"crime",type:"Band7+",front:"address the root causes of crime",back:"犯罪の根本原因に取り組む"},
+  {theme:"crime",type:"Band7+",front:"targeted social investment",back:"対象を絞った社会投資"},
+  {theme:"crime",type:"Band7+",front:"community-based rehabilitation programmes",back:"地域社会に基づく更生プログラム"},
+  {theme:"crime",type:"Band7+",front:"be attributable to poverty",back:"貧困に起因する"},
+  {theme:"crime",type:"Band7+",front:"rely solely on punitive measures",back:"罰則措置のみに依存する"},
+  {theme:"media",type:"名詞",front:"mass media / social media",back:"マスメディア / SNS"},
+  {theme:"media",type:"名詞",front:"the spread of misinformation",back:"誤情報の拡散"},
+  {theme:"media",type:"名詞",front:"fake news",back:"フェイクニュース"},
+  {theme:"media",type:"名詞",front:"press freedom",back:"報道の自由"},
+  {theme:"media",type:"名詞",front:"biased coverage",back:"偏った報道"},
+  {theme:"media",type:"名詞",front:"echo chambers",back:"エコーチェンバー"},
+  {theme:"media",type:"名詞",front:"sensationalism",back:"扇情主義"},
+  {theme:"media",type:"動詞句",front:"shape public opinion",back:"世論を形成する"},
+  {theme:"media",type:"動詞句",front:"spread misinformation",back:"誤情報を広める"},
+  {theme:"media",type:"動詞句",front:"exploit personal data",back:"個人データを悪用する"},
+  {theme:"media",type:"動詞句",front:"regulate online content",back:"オンラインコンテンツを規制する"},
+  {theme:"media",type:"Band7+",front:"exert considerable influence on public opinion",back:"世論に大きな影響を及ぼす"},
+  {theme:"media",type:"Band7+",front:"blur the line between fact and opinion",back:"事実と意見の境界を曖昧にする"},
+  {theme:"media",type:"Band7+",front:"pose a threat to democratic processes",back:"民主的プロセスを脅かす"},
+  {theme:"media",type:"Band7+",front:"hold those in power accountable",back:"権力者に説明責任を負わせる"},
+  {theme:"work",type:"名詞",front:"work-life balance",back:"ワークライフバランス"},
+  {theme:"work",type:"名詞",front:"job satisfaction",back:"仕事の満足度"},
+  {theme:"work",type:"名詞",front:"workplace stress",back:"職場のストレス"},
+  {theme:"work",type:"名詞",front:"remote working / telecommuting",back:"リモートワーク"},
+  {theme:"work",type:"名詞",front:"career advancement",back:"キャリアアップ"},
+  {theme:"work",type:"名詞",front:"gender pay gap",back:"男女賃金格差"},
+  {theme:"work",type:"名詞",front:"job security",back:"雇用の安定"},
+  {theme:"work",type:"名詞",front:"flexible working hours",back:"フレックスタイム"},
+  {theme:"work",type:"動詞句",front:"pursue a career in ~",back:"〜の分野でキャリアを追求する"},
+  {theme:"work",type:"動詞句",front:"climb the corporate ladder",back:"出世する"},
+  {theme:"work",type:"動詞句",front:"meet tight deadlines",back:"厳しい締切に間に合わせる"},
+  {theme:"work",type:"動詞句",front:"juggle work and family",back:"仕事と家庭を両立する"},
+  {theme:"work",type:"動詞句",front:"foster employee well-being",back:"従業員の福祉を促進する"},
+  {theme:"work",type:"動詞句",front:"experience burnout",back:"燃え尽き症候群を経験する"},
+  {theme:"work",type:"Band7+",front:"excessively long working hours",back:"極端な長時間労働"},
+  {theme:"work",type:"Band7+",front:"a healthy work-life balance",back:"健全なワークライフバランス"},
+  {theme:"work",type:"Band7+",front:"the shift toward remote working",back:"リモートワークへの移行"},
+  {theme:"work",type:"Band7+",front:"attract and retain talent",back:"人材を獲得・維持する"},
+  {theme:"family",type:"名詞",front:"nuclear family",back:"核家族"},
+  {theme:"family",type:"名詞",front:"extended family",back:"拡大家族"},
+  {theme:"family",type:"名詞",front:"single-parent household",back:"ひとり親家庭"},
+  {theme:"family",type:"名詞",front:"aging population",back:"高齢化人口"},
+  {theme:"family",type:"名詞",front:"intergenerational gap",back:"世代間ギャップ"},
+  {theme:"family",type:"名詞",front:"family bond / family ties",back:"家族の絆"},
+  {theme:"family",type:"名詞",front:"domestic responsibilities",back:"家庭の責任"},
+  {theme:"family",type:"動詞句",front:"raise children",back:"子供を育てる"},
+  {theme:"family",type:"動詞句",front:"strengthen family ties",back:"家族の絆を強める"},
+  {theme:"family",type:"動詞句",front:"share household responsibilities",back:"家事を分担する"},
+  {theme:"family",type:"動詞句",front:"care for elderly parents",back:"高齢の親の世話をする"},
+  {theme:"family",type:"動詞句",front:"pass down values",back:"価値観を継承する"},
+  {theme:"family",type:"Band7+",front:"the decline of the traditional family structure",back:"伝統的家族構造の衰退"},
+  {theme:"family",type:"Band7+",front:"foster a strong sense of belonging",back:"強い帰属意識を育む"},
+  {theme:"family",type:"Band7+",front:"weaken intergenerational bonds",back:"世代間の絆を弱める"},
+  {theme:"family",type:"Band7+",front:"the cornerstone of society",back:"社会の礎"},
+];
+
+const themeNames = {
+  environment:"🌍 環境",society:"👥 社会",economy:"💰 経済",
+  transport:"🚗 交通・都市",education:"🎓 教育",technology:"💻 テクノロジー",
+  consumer:"🛒 消費",culture:"🌐 文化",healthcare:"🏥 健康",
+  crime:"🚔 犯罪",media:"📺 メディア",work:"💼 仕事",family:"👨‍👩‍👧 家族"
+};
+
+let currentCards = [];
+let idx = 0;
+let learned = JSON.parse(localStorage.getItem('ielts_learned') || '{}');
+// デフォルトを「日本語→英語」に設定
+let direction = localStorage.getItem('ielts_direction') || 'jp_to_en';
+
+function getKey(c) { return c.theme + ':' + c.front; }
+
+function filterCards() {
+  const theme = document.getElementById('themeFilter').value;
+  const mode = document.getElementById('modeFilter').value;
+  let result = cards.filter(c => theme === 'all' || c.theme === theme);
+  if (mode === 'learned') result = result.filter(c => learned[getKey(c)]);
+  if (mode === 'unlearned') result = result.filter(c => !learned[getKey(c)]);
+  return result;
+}
+
+function render() {
+  currentCards = filterCards();
+  // 方向ボタン更新
+  document.getElementById('dirBtn').textContent = direction === 'jp_to_en' ? '🔄 日→英' : '🔄 英→日';
+  document.querySelector('.subtitle').textContent = direction === 'jp_to_en' ? '日本語 → 英語 練習モード' : '英語 → 日本語 練習モード';
+  document.querySelector('.card-front .card-hint').textContent = direction === 'jp_to_en' ? 'クリックで英語を表示' : 'クリックで日本語を表示';
+ 
+  if (currentCards.length === 0) {
+	document.getElementById('cardFront').textContent = '該当カードなし';
+	document.getElementById('cardBack').textContent = '';
+	document.getElementById('cardTheme').textContent = '';
+	document.getElementById('cardThemeBack').textContent = '';
+	document.getElementById('cardType').textContent = '';
+	document.getElementById('counter').textContent = '0 / 0';
+	updateStats();
+	return;
+  }
+  if (idx >= currentCards.length) idx = 0;
+  if (idx < 0) idx = currentCards.length - 1;
+  const c = currentCards[idx];
+  const isLearned = learned[getKey(c)] ? ' ✅' : '';
+  document.getElementById('cardTheme').textContent = themeNames[c.theme] + isLearned;
+  document.getElementById('cardThemeBack').textContent = themeNames[c.theme] + isLearned;
+  document.getElementById('cardType').textContent = c.type;
+  // 方向に応じて表裏切替
+  if (direction === 'jp_to_en') {
+	document.getElementById('cardFront').textContent = c.back;  // 日本語が表
+	document.getElementById('cardBack').textContent = c.front;  // 英語が裏
+  } else {
+	document.getElementById('cardFront').textContent = c.front; // 英語が表
+	document.getElementById('cardBack').textContent = c.back;   // 日本語が裏
+  }
+  document.getElementById('counter').textContent = (idx + 1) + ' / ' + currentCards.length;
+  document.getElementById('card').classList.remove('flipped');
+  updateStats();
+}
+
+function updateStats() {
+  const total = currentCards.length;
+  const learnedNum = currentCards.filter(c => learned[getKey(c)]).length;
+  const percent = total > 0 ? Math.round((learnedNum / total) * 100) : 0;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('learnedCount').textContent = learnedNum;
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressFill').style.width = percent + '%';
+}
+
+function flip() { document.getElementById('card').classList.toggle('flipped'); }
+function next() { idx++; render(); }
+function prev() { idx--; render(); }
+
+function toggleDirection() {
+  direction = direction === 'jp_to_en' ? 'en_to_jp' : 'jp_to_en';
+  localStorage.setItem('ielts_direction', direction);
+  render();
+}
+
+function shuffle() {
+  for (let i = currentCards.length - 1; i > 0; i--) {
+	const j = Math.floor(Math.random() * (i + 1));
+	[currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
+  }
+  idx = 0;
+  render();
+}
+
+function markLearned() {
+  if (currentCards.length === 0) return;
+  learned[getKey(currentCards[idx])] = true;
+  localStorage.setItem('ielts_learned', JSON.stringify(learned));
+  next();
+}
+
+function markUnlearned() {
+  if (currentCards.length === 0) return;
+  delete learned[getKey(currentCards[idx])];
+  localStorage.setItem('ielts_learned', JSON.stringify(learned));
+  next();
+}
+
+function resetProgress() {
+  if (confirm('進捗を全てリセットしますか？')) {
+	learned = {};
+	localStorage.removeItem('ielts_learned');
+	render();
+  }
+}
+
+document.getElementById('themeFilter').addEventListener('change', () => { idx = 0; render(); });
+document.getElementById('modeFilter').addEventListener('change', () => { idx = 0; render(); });
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); flip(); }
+  if (e.code === 'ArrowRight') next();
+  if (e.code === 'ArrowLeft') prev();
+  if (e.code === 'Digit1') markLearned();
+  if (e.code === 'Digit2') markUnlearned();
+});
+
+render();
+</script>
+</body>
+</html>
+
