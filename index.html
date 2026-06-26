@@ -135,6 +135,8 @@ button.toggle:hover { background: #7c3aed; }
   	<option value="media">📺 メディア</option>
   	<option value="work">💼 仕事</option>
   	<option value="family">👨‍👩‍👧 家族</option>
+    <option value="government">🏛️ 政府・政策</option>  ← この行追加
+
 	</select>
 	<select id="modeFilter">
   	<option value="all">全レベル</option>
@@ -490,12 +492,211 @@ const cards = [
   {theme:"discussion",type:"強調副詞",front:"closely related to",back:"〜と密接に関連している"},
 ];
 
+  // ========== 議題・論点カード ==========
+
+  // 🌍 環境 - 議題
+  {theme:"environment",type:"議題",front:"The causes and solutions of air pollution",back:"大気汚染の原因と解決策"},
+  {theme:"environment",type:"議題",front:"The impact of climate change on society",back:"気候変動が社会に与える影響"},
+  {theme:"environment",type:"議題",front:"Should governments invest in renewable energy?",back:"政府は再生可能エネルギーに投資すべきか"},
+  {theme:"environment",type:"議題",front:"Are individuals or governments more responsible for protecting the environment?",back:"環境保護の責任は個人か政府か"},
+  // 🌍 環境 - 論点
+  {theme:"environment",type:"論点",front:"Industrial activity and emissions contribute significantly to air pollution.",back:"工業活動と排出は大気汚染に大きく寄与する"},
+  {theme:"environment",type:"論点",front:"Climate change causes more frequent extreme weather events.",back:"気候変動は異常気象を頻発させる"},
+  {theme:"environment",type:"論点",front:"Renewable energy reduces dependence on fossil fuels.",back:"再生可能エネルギーは化石燃料依存を減らす"},
+  {theme:"environment",type:"論点",front:"Individual behaviour change has limited impact without government policies.",back:"個人の行動変化は政府の政策なしでは効果が限定的"},
+  {theme:"environment",type:"論点",front:"Strict environmental regulations can drive innovation in green technology.",back:"厳格な環境規制はグリーン技術の革新を促進する"},
+
+  // 🎓 教育 - 議題
+  {theme:"education",type:"議題",front:"Should higher education be free for everyone?",back:"高等教育は全員無料にすべきか"},
+  {theme:"education",type:"議題",front:"Are traditional teaching methods still effective?",back:"伝統的教授法はまだ有効か"},
+  {theme:"education",type:"議題",front:"Should children learn a foreign language at primary school?",back:"子供は小学校で外国語を学ぶべきか"},
+  {theme:"education",type:"議題",front:"The role of technology in education",back:"教育におけるテクノロジーの役割"},
+  // 🎓 教育 - 論点
+  {theme:"education",type:"論点",front:"Free higher education increases access for low-income students.",back:"無料の高等教育は低所得層のアクセスを広げる"},
+  {theme:"education",type:"論点",front:"Traditional teaching methods provide structured learning.",back:"伝統的な指導法は体系的な学習に有効"},
+  {theme:"education",type:"論点",front:"Early language learning improves cognitive flexibility.",back:"早期言語学習は認知の柔軟性を高める"},
+  {theme:"education",type:"論点",front:"Technology can enhance learning but may reduce critical thinking.",back:"テクノロジーは学習を補強するが思考力を弱めるリスクもある"},
+  {theme:"education",type:"論点",front:"Universities should focus more on practical skills.",back:"大学は実践的スキルにより重点を置くべき"},
+
+  // 🏥 健康 - 議題
+  {theme:"healthcare",type:"議題",front:"Is obesity caused by individual or social factors?",back:"肥満は個人の責任か社会的要因か"},
+  {theme:"healthcare",type:"議題",front:"Should fast food be taxed?",back:"ファストフードに課税すべきか"},
+  {theme:"healthcare",type:"議題",front:"Mental health awareness in society",back:"社会におけるメンタルヘルス意識"},
+  {theme:"healthcare",type:"議題",front:"Should governments fund healthcare?",back:"政府は医療に資金を投じるべきか"},
+  // 🏥 健康 - 論点
+  {theme:"healthcare",type:"論点",front:"Modern lifestyles contribute to rising obesity rates.",back:"現代のライフスタイルは肥満率上昇に寄与する"},
+  {theme:"healthcare",type:"論点",front:"Taxing unhealthy food can reduce demand for harmful products.",back:"不健康な食品への課税は需要を減らす"},
+  {theme:"healthcare",type:"論点",front:"Mental health issues are increasingly recognised as essential to overall well-being.",back:"精神疾患は全体的健康に不可欠と認識されつつある"},
+  {theme:"healthcare",type:"論点",front:"Public healthcare ensures equal access for all citizens.",back:"公的医療は全市民の平等なアクセスを保証する"},
+  {theme:"healthcare",type:"論点",front:"Prevention is more cost-effective than treatment.",back:"予防は治療よりも費用対効果が高い"},
+
+  // 💻 テクノロジー - 議題
+  {theme:"technology",type:"議題",front:"The impact of AI on jobs",back:"AIが雇用に与える影響"},
+  {theme:"technology",type:"議題",front:"Should children use smartphones?",back:"子供はスマートフォンを使うべきか"},
+  {theme:"technology",type:"議題",front:"Online communication vs face-to-face",back:"オンラインコミュニケーション対面対比"},
+  {theme:"technology",type:"議題",front:"Is technology making us less social?",back:"テクノロジーは私たちの社交性を低下させているか"},
+  // 💻 テクノロジー - 論点
+  {theme:"technology",type:"論点",front:"AI may replace routine jobs, requiring workforce retraining.",back:"AIはルーチン業務を代替し再教育が必要"},
+  {theme:"technology",type:"論点",front:"Smartphone use among children can affect concentration.",back:"子供のスマホ利用は集中力に影響しうる"},
+  {theme:"technology",type:"論点",front:"Online communication enables global collaboration.",back:"オンライン通信は国際協力を可能にする"},
+  {theme:"technology",type:"論点",front:"Technology can reduce face-to-face social skills.",back:"テクノロジーは対面のソーシャルスキルを低下させうる"},
+  {theme:"technology",type:"論点",front:"Digital literacy has become essential in modern society.",back:"デジタルリテラシーは現代社会で必須となっている"},
+
+  // 💼 仕事 - 議題
+  {theme:"work",type:"議題",front:"Work-life balance",back:"ワークライフバランス"},
+  {theme:"work",type:"議題",front:"Should the working week be reduced?",back:"労働時間を短縮すべきか"},
+  {theme:"work",type:"議題",front:"Remote working: pros and cons",back:"リモートワークの長所と短所"},
+  {theme:"work",type:"議題",front:"Should employees retire later?",back:"従業員はもっと遅く退職すべきか"},
+  // 💼 仕事 - 論点
+  {theme:"work",type:"論点",front:"Poor work-life balance leads to mental health issues.",back:"仕事と生活のバランス悪化はメンタル不調を招く"},
+  {theme:"work",type:"論点",front:"Reduced working hours can increase productivity.",back:"労働時間短縮は生産性向上につながりうる"},
+  {theme:"work",type:"論点",front:"Remote working offers flexibility but reduces collaboration.",back:"リモートワークは柔軟性を提供するが協働を弱める"},
+  {theme:"work",type:"論点",front:"Later retirement reduces pressure on pension systems.",back:"退職年齢の引き上げは年金制度の負担を軽減する"},
+  {theme:"work",type:"論点",front:"Employees value job security as much as salary.",back:"従業員は給与と同等に雇用安定性を重視する"},
+
+  // 👥 社会 - 議題
+  {theme:"society",type:"議題",front:"The decline of traditional families",back:"伝統的家族の衰退"},
+  {theme:"society",type:"議題",front:"Ageing population issues",back:"高齢化人口の問題"},
+  {theme:"society",type:"議題",front:"Gender equality in the workplace",back:"職場における男女平等"},
+  {theme:"society",type:"議題",front:"Crime and social inequality",back:"犯罪と社会的不平等"},
+  // 👥 社会 - 論点
+  {theme:"society",type:"論点",front:"Nuclear families have replaced traditional extended families.",back:"拡大家族から核家族への移行が進んでいる"},
+  {theme:"society",type:"論点",front:"Ageing populations create labour shortages.",back:"高齢化社会は労働力不足を引き起こす"},
+  {theme:"society",type:"論点",front:"Gender equality leads to economic growth.",back:"男女平等は経済成長につながる"},
+  {theme:"society",type:"論点",front:"Poverty is a major cause of crime.",back:"貧困は犯罪の主要因"},
+  {theme:"society",type:"論点",front:"Strong communities improve social cohesion.",back:"強い地域社会は社会的結束を強める"},
+
+  // 🚗 交通・都市 - 議題
+  {theme:"transport",type:"議題",front:"Traffic congestion in cities",back:"都市部の交通渋滞"},
+  {theme:"transport",type:"議題",front:"Should governments invest in public transport?",back:"政府は公共交通に投資すべきか"},
+  {theme:"transport",type:"議題",front:"Air pollution from vehicles",back:"自動車による大気汚染"},
+  {theme:"transport",type:"議題",front:"Should private cars be banned in cities?",back:"市街地で自家用車を禁止すべきか"},
+  // 🚗 交通・都市 - 論点
+  {theme:"transport",type:"論点",front:"Traffic congestion damages productivity and air quality.",back:"渋滞は生産性と空気質を悪化させる"},
+  {theme:"transport",type:"論点",front:"Improved public transport reduces car dependence.",back:"公共交通の整備は車依存を減らす"},
+  {theme:"transport",type:"論点",front:"Vehicle emissions are a major cause of pollution.",back:"自動車排ガスは大気汚染の主要因"},
+  {theme:"transport",type:"論点",front:"Banning cars could improve urban living conditions.",back:"市内の車禁止は都市の住環境を改善しうる"},
+  {theme:"transport",type:"論点",front:"Urban planning is key to reducing transport problems.",back:"都市計画は交通問題解決の鍵"},
+
+  // 🌐 文化・グローバル化 - 議題
+  {theme:"culture",type:"議題",front:"Globalisation and cultural identity",back:"グローバル化と文化的アイデンティティ"},
+  {theme:"culture",type:"議題",front:"Should English be the only global language?",back:"英語を唯一の世界共通語とすべきか"},
+  {theme:"culture",type:"議題",front:"Migration's impact on host countries",back:"移民が受入国に与える影響"},
+  {theme:"culture",type:"議題",front:"Cultural exchange through travel",back:"旅行を通じた文化交流"},
+  // 🌐 文化・グローバル化 - 論点
+  {theme:"culture",type:"論点",front:"Globalisation can erode cultural identity.",back:"グローバル化は文化的アイデンティティを侵食しうる"},
+  {theme:"culture",type:"論点",front:"A single global language threatens cultural diversity.",back:"単一の世界共通言語は文化的多様性を脅かす"},
+  {theme:"culture",type:"論点",front:"Migration boosts economies and innovation.",back:"移民は経済とイノベーションを促進する"},
+  {theme:"culture",type:"論点",front:"International travel enhances cultural understanding.",back:"海外旅行は異文化理解を深める"},
+  {theme:"culture",type:"論点",front:"Local traditions need protection to maintain identity.",back:"地域伝統はアイデンティティ維持のため保護されるべき"},
+
+  // 👨‍👩‍👧 家族・子ども - 議題
+  {theme:"family",type:"議題",front:"Should both parents share childcare equally?",back:"両親は育児を平等に分担すべきか"},
+  {theme:"family",type:"議題",front:"Should children attend kindergarten early?",back:"子供は早期に幼稚園に通うべきか"},
+  {theme:"family",type:"議題",front:"Influence of media on children",back:"メディアが子供に与える影響"},
+  {theme:"family",type:"議題",front:"Should parents be strict?",back:"親は厳しくあるべきか"},
+  // 👨‍👩‍👧 家族・子ども - 論点
+  {theme:"family",type:"論点",front:"Equal childcare strengthens family bonds.",back:"育児の平等分担は家族関係を強める"},
+  {theme:"family",type:"論点",front:"Early education supports children's social skills.",back:"早期教育は子供の社会性を高める"},
+  {theme:"family",type:"論点",front:"Media influence shapes children's behaviour.",back:"メディアの影響は子供の行動を形作る"},
+  {theme:"family",type:"論点",front:"Strict parenting helps establish discipline.",back:"厳しい教育はしつけを身につけさせる"},
+  {theme:"family",type:"論点",front:"Parental involvement is critical for academic success.",back:"親の関わりは学業成功に不可欠"},
+
+  // 🏛️ 政府・政策 - 議題（新テーマ）
+  {theme:"government",type:"議題",front:"Should governments fund the arts?",back:"政府は芸術に資金を投じるべきか"},
+  {theme:"government",type:"議題",front:"Is the death penalty justified?",back:"死刑は正当化されるか"},
+  {theme:"government",type:"議題",front:"Should taxes be higher for the wealthy?",back:"富裕層への課税を強化すべきか"},
+  {theme:"government",type:"議題",front:"Should governments restrict freedom of speech?",back:"政府は言論の自由を制限すべきか"},
+  // 🏛️ 政府・政策 - 論点
+  {theme:"government",type:"論点",front:"Public funding for the arts enriches cultural life.",back:"芸術への公的助成は文化生活を豊かにする"},
+  {theme:"government",type:"論点",front:"The death penalty does not effectively reduce crime.",back:"死刑は犯罪抑止効果が限定的"},
+  {theme:"government",type:"論点",front:"Higher taxes on the wealthy reduce inequality.",back:"富裕層への課税強化は格差を縮める"},
+  {theme:"government",type:"論点",front:"Restricting speech limits democracy.",back:"言論統制は民主主義を制限する"},
+  {theme:"government",type:"論点",front:"Government action is essential to address societal challenges.",back:"政府の介入は社会的課題解決に不可欠"},
+
+  // 🚔 犯罪と司法 - 議題
+  {theme:"crime",type:"議題",front:"Causes of juvenile crime",back:"少年犯罪の原因"},
+  {theme:"crime",type:"議題",front:"Rehabilitation vs punishment",back:"更生対処罰"},
+  {theme:"crime",type:"議題",front:"Effectiveness of harsh penalties",back:"厳罰の効果"},
+  {theme:"crime",type:"議題",front:"The role of community-based programmes",back:"地域コミュニティプログラムの役割"},
+  // 🚔 犯罪と司法 - 論点
+  {theme:"crime",type:"論点",front:"Juvenile crime is often linked to poverty and family issues.",back:"少年犯罪は貧困や家庭問題と関連が深い"},
+  {theme:"crime",type:"論点",front:"Rehabilitation reduces reoffending more than punishment.",back:"更生は処罰より再犯防止に効果的"},
+  {theme:"crime",type:"論点",front:"Harsh penalties may deter crime but raise human rights concerns.",back:"厳罰は犯罪抑止になるが人権面で問題がある"},
+  {theme:"crime",type:"論点",front:"Community programmes provide effective social reintegration.",back:"地域コミュニティ活動は社会復帰に有効"},
+  {theme:"crime",type:"論点",front:"Long-term crime reduction requires social investment.",back:"長期的な犯罪減少には社会投資が必要"},
+
+  // 📺 メディア - 議題
+  {theme:"media",type:"議題",front:"The role of social media",back:"SNSの役割"},
+  {theme:"media",type:"議題",front:"The spread of misinformation",back:"誤情報の拡散"},
+  {theme:"media",type:"議題",front:"Should the media be regulated?",back:"メディアは規制されるべきか"},
+  {theme:"media",type:"議題",front:"Should violent content be restricted?",back:"暴力的コンテンツは制限されるべきか"},
+  // 📺 メディア - 論点
+  {theme:"media",type:"論点",front:"Social media shapes public opinion.",back:"SNSは世論形成に影響する"},
+  {theme:"media",type:"論点",front:"Misinformation spreads quickly online.",back:"誤情報はネット上で急速に拡散する"},
+  {theme:"media",type:"論点",front:"Regulation can protect democratic processes.",back:"規制は民主主義の保護につながる"},
+  {theme:"media",type:"論点",front:"Restricting violent content reduces harm to vulnerable viewers.",back:"暴力コンテンツの制限は弱い立場の視聴者を守る"},
+  {theme:"media",type:"論点",front:"Media literacy is essential in the digital age.",back:"情報リテラシーはデジタル時代に必須"},
+
+  // ========== 🎯 Band 7 達成のための厳選30表現 ==========
+
+  // A. 段落の冒頭・論点提示（CC強化）
+  {theme:"discussion",type:"A.論点提示",front:"One of the main issues is that ...",back:"主要な問題の一つは〜ということだ"},
+  {theme:"discussion",type:"A.論点提示",front:"Another important factor is ...",back:"もう一つ重要な要因は〜である"},
+  {theme:"discussion",type:"A.論点提示",front:"A further point worth considering is ...",back:"さらに考慮すべき点は〜である"},
+  {theme:"discussion",type:"A.論点提示",front:"The most significant cause of this is ...",back:"これの最も重要な原因は〜である"},
+
+  // B. 因果・結果を表す（LR強化）
+  {theme:"discussion",type:"B.因果",front:"lead to",back:"〜につながる"},
+  {theme:"discussion",type:"B.因果",front:"result in",back:"〜という結果になる"},
+  {theme:"discussion",type:"B.因果",front:"contribute to",back:"〜に寄与する"},
+  {theme:"discussion",type:"B.因果",front:"give rise to",back:"〜を引き起こす"},
+  {theme:"discussion",type:"B.因果",front:"have a significant impact on",back:"〜に大きな影響を与える"},
+
+  // C. 抽象→具体への橋渡し（CC強化）
+  {theme:"discussion",type:"C.具体例",front:"For example, ...",back:"例えば〜"},
+  {theme:"discussion",type:"C.具体例",front:"In particular, ...",back:"特に〜"},
+  {theme:"discussion",type:"C.具体例",front:"This is especially evident in cases where ...",back:"これは〜の場合に特に顕著である"},
+
+  // D. 譲歩→反論を作る（CC強化）
+  {theme:"discussion",type:"D.譲歩",front:"While it is true that A, B is more significant.",back:"Aは事実だが、Bの方がより重要である"},
+  {theme:"discussion",type:"D.譲歩",front:"Although A may seem reasonable, B is far more important.",back:"Aは妥当に見えるが、Bの方がはるかに重要である"},
+  {theme:"discussion",type:"D.譲歩",front:"Despite these concerns, ...",back:"こうした懸念にもかかわらず〜"},
+
+  // E. 強い主張・意見表明（LR強化）
+  {theme:"discussion",type:"E.主張",front:"It is widely accepted that ...",back:"〜ということは広く受け入れられている"},
+  {theme:"discussion",type:"E.主張",front:"There is little doubt that ...",back:"〜ということに疑いの余地はほとんどない"},
+  {theme:"discussion",type:"E.主張",front:"It is increasingly clear that ...",back:"〜であることがますます明らかになっている"},
+
+  // F. 評価・程度を強くする副詞（LR強化）
+  {theme:"discussion",type:"F.強調副詞",front:"significantly",back:"著しく・大幅に"},
+  {theme:"discussion",type:"F.強調副詞",front:"considerably",back:"かなり・相当に"},
+  {theme:"discussion",type:"F.強調副詞",front:"largely",back:"大部分は・主に"},
+
+  // G. 問題・対策を扱える動詞（LR強化）
+  {theme:"discussion",type:"G.対策動詞",front:"address (an issue)",back:"(問題に)取り組む"},
+  {theme:"discussion",type:"G.対策動詞",front:"tackle (a problem)",back:"(問題に)対処する"},
+  {theme:"discussion",type:"G.対策動詞",front:"mitigate (the impact of)",back:"(〜の影響を)緩和する"},
+  {theme:"discussion",type:"G.対策動詞",front:"enhance (productivity / awareness)",back:"(生産性/意識を)高める"},
+
+  // H. 安全な複文構造（GRA強化）
+  {theme:"grammar",type:"H.複文",front:"It is essential that governments take action.",back:"政府が行動を起こすことが不可欠である（It is + 形容詞 + that節）"},
+  {theme:"grammar",type:"H.複文",front:"By implementing stricter regulations, governments can reduce pollution.",back:"より厳しい規制を実施することで、政府は汚染を減らせる（By + Ving）"},
+  {theme:"grammar",type:"H.複文",front:"EVs do not produce exhaust gases, which reduces air pollution.",back:"EVは排気ガスを出さず、それが大気汚染を減らす（結果のwhich）"},
+
+  // I. 高評価を取れる定番構文（GRA強化）
+  {theme:"grammar",type:"I.高評価構文",front:"If governments invested more in public transport, traffic problems would decrease.",back:"政府が公共交通にもっと投資すれば、交通問題は減少するだろう（仮定法）"},
+  {theme:"grammar",type:"I.高評価構文",front:"Not only does this reduce pollution, but it also improves public health.",back:"これは汚染を減らすだけでなく、公衆衛生も改善する（倒置構文）"},
+
+
+
+
 const themeNames = {
   grammar:"🅰️ 文法構造",discussion:"🅱️ 議論・程度",
   environment:"🌍 環境",society:"👥 社会",economy:"💰 経済",
   transport:"🚗 交通・都市",education:"🎓 教育",technology:"💻 テクノロジー",
   consumer:"🛒 消費",culture:"🌐 文化",healthcare:"🏥 健康",
-  crime:"🚔 犯罪",media:"📺 メディア",work:"💼 仕事",family:"👨‍👩‍👧 家族"
+  crime:"🚔 犯罪",media:"📺 メディア",work:"💼 仕事",family:"👨‍👩‍👧 家族",government:"🏛️ 政府・政策"
 };
 
 let currentCards = [];
